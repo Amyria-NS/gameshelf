@@ -1,6 +1,6 @@
 CREATE SCHEMA gameshelf;
 
-CREATE TYPE gameshelf.platform AS ENUM ('PC', 'Xbox', 'Playstation', 'Gamecube', 'Switch');
+CREATE TYPE gameshelf.platform AS ENUM ('PC', 'XBOX', 'PLAYSTATION', 'GAMECUBE', 'SWITCH');
 CREATE TYPE gameshelf.status AS ENUM ('BACKLOG', 'PLAYING', 'COMPLETED', 'DROPPED');
 
 CREATE TABLE gameshelf.games(
