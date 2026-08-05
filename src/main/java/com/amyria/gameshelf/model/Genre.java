@@ -2,6 +2,8 @@ package com.amyria.gameshelf.model;
 
 import jakarta.persistence.*;
 
+@Entity
+@Table(name="genres")
 public class Genre {
 	
 	/** Default Constructor */
