@@ -2,7 +2,6 @@ package com.amyria.gameshelf.service;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GameRequest;
@@ -13,9 +12,12 @@ import com.amyria.gameshelf.repository.GameRepository;
 @Service
 public class GameService {
 	
-	//Initialize Game Repository
-	@Autowired
-	private GameRepository gameRepository;
+	private final GameRepository gameRepository;
+	
+	//GameRepository should be provided when GameService is initialized
+	public GameService(GameRepository gameRepository) {
+		this.gameRepository = gameRepository;
+	}
 	
 	public Game createGame(GameRequest request) {
 		
