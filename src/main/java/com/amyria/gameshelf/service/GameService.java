@@ -1,6 +1,7 @@
 package com.amyria.gameshelf.service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,42 @@ public class GameService {
 		
 	}
 	
+	public Optional<Game> getGame(int id) {
+		return gameRepository.findById(id);	
+	}
+	
+	
+	public Optional<Game> updateGame(int id, GameRequest request){
+		Optional<Game> optionalGame = gameRepository.findById(id);
+		if (optionalGame.isEmpty()) {
+			return optionalGame;
+		}
+		Game game = optionalGame.get();
+		
+		if (request.getStatus() == Status.COMPLETED) {
+			if(request.getDateCompleted() == null && game.getDateCompleted() == null) {
+				game.setDateCompleted(LocalDate.now());
+			}
+			else if(request.getDateCompleted() != null) {
+				game.setDateCompleted(request.getDateCompleted());
+			}
+		}
+		
+		game.setNotes(request.getNotes());
+		game.setPlatform(request.getPlatform());
+		game.setStatus(request.getStatus());
+		game.setTitle(request.getTitle());
+		gameRepository.save(game);
+		return optionalGame;
+	}
+	
+	public Optional<Game> deleteGame(int id){
+		Optional<Game> optionalGame = gameRepository.findById(id);
+		if (optionalGame.isEmpty()) {
+			return optionalGame;
+		}
+		gameRepository.deleteById(id);
+		return optionalGame;
+	}
 
 }
