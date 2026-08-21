@@ -1,0 +1,79 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+body{
+    font-family : 'Roboto';
+    font-weight: 500;
+}
+
+#game-input-output{
+
+    display:flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    gap:1rem;
+}
+#get-game-input{
+    width: 30%;
+    max-width: 400px;
+    background-color: rgb(219, 219, 219);
+    margin:20px;
+    padding:10px;
+    height:200px;
+    border-radius: 10px;
+    border: 5px;
+    border-color: black;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    text-justify: center;
+}
+
+#get-game-input-label{
+    width: 100%;
+    background-color: rgb(155, 155, 155);
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom:5px;
+    color:blue;
+    margin-bottom: 15px;
+}
+
+.field-button-row{
+    text-align: left;
+}
+
+#game-id-input{
+    height:25px;
+    border-radius: 5px;
+    outline:none;
+    border: 1px solid black;
+    padding-left:3px;
+    padding-right:3px;
+}
+
+#get-game-button{
+    height: 28px;
+    background-color: green;
+    color:white;
+    border-radius:5px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+#get-game-button:hover{
+    filter: brightness(120%);
+}
+
+#get-game-output{
+    width:98%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right:1%;
+    padding-left:1%;
+    margin-top:5px;
+    text-justify: left;
+    text-align: left;
+}
