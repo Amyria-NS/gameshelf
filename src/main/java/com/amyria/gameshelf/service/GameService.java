@@ -1,12 +1,16 @@
 package com.amyria.gameshelf.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GameRequest;
 import com.amyria.gameshelf.model.Game;
+import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.repository.GameRepository;
 
@@ -80,5 +84,17 @@ public class GameService {
 		gameRepository.deleteById(id);
 		return optionalGame;
 	}
+	
+	public List<Game> getGames(String sortBy, Sort.Direction direction, String search, Status status, Platform platform){
+		List<Game> games = new ArrayList<Game>();
+		System.out.println(Sort.Direction.ASC.getClass());
+		
+		games = gameRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
+		
+		
+		
+		return games;
+	}
+	
 
 }

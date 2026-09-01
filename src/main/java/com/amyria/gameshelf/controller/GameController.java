@@ -1,13 +1,18 @@
 package com.amyria.gameshelf.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.amyria.gameshelf.dto.GameRequest;
 import com.amyria.gameshelf.model.Game;
+import com.amyria.gameshelf.model.enums.Platform;
+import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.service.GameService;
 
 import jakarta.validation.Valid;
@@ -60,5 +65,20 @@ public class GameController {
 			return ResponseEntity.ok(optionalGame.get());
 		}
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<Game>> getGames(
+			@RequestParam(defaultValue="title") String sortBy,
+			@RequestParam(defaultValue="ASC") Sort.Direction direction,
+			@RequestParam(required=false) String search,
+			@RequestParam(required=false) Status status,
+			@RequestParam(required=false) Platform platform){
+		
+		List<Game> games = gameService.getGames(sortBy, direction,search,status,platform);
+		return ResponseEntity.ok(games);
+		
+	}
+	
+
 
 }

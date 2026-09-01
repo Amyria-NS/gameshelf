@@ -1,6 +1,7 @@
 package com.amyria.gameshelf.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import com.amyria.gameshelf.model.Game;
 
@@ -12,7 +13,7 @@ import com.amyria.gameshelf.model.Game;
  * @author Amyria
  */
 @Repository
-public interface GameRepository extends JpaRepository<Game, Integer>{
+public interface GameRepository extends JpaRepository<Game, Integer>, JpaSpecificationExecutor<Game>{
 	
 	
 

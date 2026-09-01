@@ -7,7 +7,7 @@ body{
     font-weight: 500;
 }
 
-#game-input-output{
+.game-input-output{
 
     display:flex;
     flex-direction: row;
@@ -15,13 +15,12 @@ body{
     justify-content: left;
     gap:1rem;
 }
-#get-game-input{
+.api-panel{
     width: 30%;
     max-width: 400px;
     background-color: rgb(219, 219, 219);
     margin:20px;
     padding:10px;
-    height:200px;
     border-radius: 10px;
     border: 5px;
     border-color: black;
@@ -31,7 +30,7 @@ body{
     text-justify: center;
 }
 
-#get-game-input-label{
+.api-panel-label{
     width: 100%;
     background-color: rgb(155, 155, 155);
     border-radius: 10px;
@@ -45,7 +44,7 @@ body{
     text-align: left;
 }
 
-#game-id-input{
+#game-id-input, #game-id-input-delete{
     height:25px;
     border-radius: 5px;
     outline:none;
@@ -54,7 +53,7 @@ body{
     padding-right:3px;
 }
 
-#get-game-button{
+#get-game-button, #delete-game-button{
     height: 28px;
     background-color: green;
     color:white;
@@ -76,4 +75,28 @@ body{
     margin-top:5px;
     text-justify: left;
     text-align: left;
+}
+
+.create-game-field{
+    border-radius: 5px;
+    margin:2px;
+}
+
+#create-game-button{
+    background-color: green;
+    color:white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid black;
+
+}
+
+#create-game-button:hover{
+    filter: brightness(120%);
+}
+
+.api-output{
+    height:20px;
+    background-color: aliceblue;
+    margin-top: 20px;
 }

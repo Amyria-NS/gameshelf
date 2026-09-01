@@ -11,14 +11,48 @@
 
     </head>
     <body>
-        <div id = "game-input-output">
-            <form id = 'get-game-input'>
-                <label id = 'get-game-input-label' for="game-id-input">Search Game By ID</label>
+        <div class = "game-input-output">
+            <form id = 'get-game-input' class = 'api-panel'>
+                <label id = 'get-game-input-label' class = 'api-panel-label' for="game-id-input">Search Game By ID</label>
                 <div class="field-button-row">
                     <input id = 'game-id-input' placeholder="Enter game ID">
                     <button id = 'get-game-button'>Submit</button>
                 </div>
                 <div id = 'get-game-output'>
+            
+                </div>
+            </form>
+
+            <form id = 'create-game' class = 'api-panel'>
+                <div id = 'create-game-header' class = 'api-panel-label'>Create game</div>
+                <input id="create-game-title" class = 'create=game-field' placeholder = 'Title'><br>
+                <input id="create-game-platform" class = 'create=game-field' placeholder = 'Platform'><br>
+                <input id="create-game-status" class = 'create=game-field' placeholder = 'Status'><br>
+                <input id="create-game-notes" class = 'create=game-field' placeholder = 'Notes'><br>
+                <button id = 'create-game-button'>Submit</button>
+                <div id = 'create-game-output' class = 'api-output'></div>
+
+            </form>
+
+            <form id = 'update-game' class = 'api-panel'>
+                <div id = 'update-game-header' class = 'api-panel-label'>Update game</div>
+                <input id="update-game-id" class = 'create=game-field' placeholder = 'ID'><br>
+                <input id="update-game-title" class = 'create=game-field' placeholder = 'Title'><br>
+                <input id="update-game-platform" class = 'create=game-field' placeholder = 'Platform'><br>
+                <input id="update-game-status" class = 'create=game-field' placeholder = 'Status'><br>
+                <input id="update-game-notes" class = 'create=game-field' placeholder = 'Notes'><br>
+                <button id = 'update-game-button'>Submit</button>
+                <div id = 'update-game-output' class = 'api-output'></div>
+
+            </form>
+
+            <form id = 'delete-game' class = 'api-panel'>
+                <label id = 'delete-game-input-label' class = 'api-panel-label' for="game-id-input">Delete Game By ID</label>
+                <div class="field-button-row">
+                    <input id = 'game-id-input-delete' placeholder="Enter game ID">
+                    <button id = 'delete-game-button'>Submit</button>
+                </div>
+                <div id = 'delete-game-output' class= 'api-output'>
             
                 </div>
             </form>
