@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GameRequest;
@@ -13,15 +14,18 @@ import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.repository.GameRepository;
+import com.amyria.gameshelf.specification.GameSpecifications;
 
 @Service
 public class GameService {
 	
 	private final GameRepository gameRepository;
+	private final GameSpecifications gameSpecifications;
 	
 	//GameRepository should be provided when GameService is initialized
-	public GameService(GameRepository gameRepository) {
+	public GameService(GameRepository gameRepository, GameSpecifications gameSpecifications) {
 		this.gameRepository = gameRepository;
+		this.gameSpecifications = gameSpecifications;
 	}
 	
 	public Game createGame(GameRequest request) {
@@ -86,14 +90,19 @@ public class GameService {
 	}
 	
 	public List<Game> getGames(String sortBy, Sort.Direction direction, String search, Status status, Platform platform){
-		List<Game> games = new ArrayList<Game>();
-		System.out.println(Sort.Direction.ASC.getClass());
+		Specification<Game> spec = Specification.unrestricted();
+		if (search != null) {
+			spec = spec.and(gameSpecifications.titleContains(search));
+		}
+		if (status != null) {
+			spec = spec.and(gameSpecifications.hasStatus(status));
+		}
+		if (platform != null) {
+			spec=spec.and(gameSpecifications.hasPlatform(platform));
+		}
+		Sort sort = Sort.by(direction, sortBy);
 		
-		games = gameRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
-		
-		
-		
-		return games;
+		return gameRepository.findAll(spec, sort);
 	}
 	
 

@@ -19,3 +19,14 @@ name VARCHAR(100) NOT NULL UNIQUE,
 description TEXT
 );
 
+CREATE TABLE gameshelf.game_genres(
+    game_id INTEGER NOT NULL REFERENCES gameshelf.games(id) ON DELETE CASCADE,
+    genre_id INTEGER NOT NULL REFERENCES gameshelf.genres(id) ON DELETE CASCADE,
+    PRIMARY KEY (game_id, genre_id)
+);
+
+CREATE TABLE gameshelf.game_images(
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    game_id INTEGER NOT NULL UNIQUE REFERENCES gameshelf.games(id) ON DELETE CASCADE,
+    image_path VARCHAR(500) NOT NULL
+);
