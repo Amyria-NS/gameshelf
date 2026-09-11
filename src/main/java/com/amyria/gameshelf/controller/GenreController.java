@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amyria.gameshelf.dto.GenreRequest;
-import com.amyria.gameshelf.model.Genre;
+import com.amyria.gameshelf.dto.GenreResponse;
+import com.amyria.gameshelf.dto.GenreResponseDetailed;
 import com.amyria.gameshelf.service.GenreService;
 
 import jakarta.validation.Valid;
@@ -35,14 +36,14 @@ public class GenreController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Genre> createGenre(@RequestBody @Valid GenreRequest request){
-		Genre savedGenre = genreService.createGenre(request);
+	public ResponseEntity<GenreResponseDetailed> createGenre(@RequestBody @Valid GenreRequest request){
+		GenreResponseDetailed savedGenre = genreService.createGenre(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Genre> getGenreById(@PathVariable Integer id){
-		Optional<Genre> optionalGenre = genreService.getGenre(id);
+	public ResponseEntity<GenreResponseDetailed> getGenreById(@PathVariable Integer id){
+		Optional<GenreResponseDetailed> optionalGenre = genreService.getGenre(id);
 		if (optionalGenre.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -52,8 +53,8 @@ public class GenreController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Genre> updateGenre(@PathVariable Integer id, @RequestBody @Valid GenreRequest request){
-		Optional<Genre> optionalGenre = genreService.updateGenre(id, request);
+	public ResponseEntity<GenreResponseDetailed> updateGenre(@PathVariable Integer id, @RequestBody @Valid GenreRequest request){
+		Optional<GenreResponseDetailed> optionalGenre = genreService.updateGenre(id, request);
 		if (optionalGenre.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -63,8 +64,8 @@ public class GenreController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Genre> deleteGenre(@PathVariable Integer id){
-		Optional<Genre> optionalGenre = genreService.deleteGenre(id);
+	public ResponseEntity<GenreResponseDetailed> deleteGenre(@PathVariable Integer id){
+		Optional<GenreResponseDetailed> optionalGenre = genreService.deleteGenre(id);
 		if (optionalGenre.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -74,10 +75,10 @@ public class GenreController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Genre>> getGenres(
+	public ResponseEntity<List<GenreResponse>> getGenres(
 			@RequestParam(defaultValue="ASC") Sort.Direction direction,
 			@RequestParam(required=false) String search){
-		List<Genre> genres = genreService.getGenres(direction, search);
+		List<GenreResponse> genres = genreService.getGenres(direction, search);
 		return ResponseEntity.ok(genres);
 	}
 

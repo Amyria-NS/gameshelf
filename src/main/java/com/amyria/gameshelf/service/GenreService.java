@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GenreRequest;
+import com.amyria.gameshelf.dto.GenreResponse;
+import com.amyria.gameshelf.dto.GenreResponseDetailed;
 import com.amyria.gameshelf.model.Genre;
 import com.amyria.gameshelf.repository.GenreRepository;
 import com.amyria.gameshelf.specification.GenreSpecification;
@@ -23,42 +25,43 @@ public class GenreService {
 		this.genreSpecification = genreSpecification;
 	}
 	
-	public Genre createGenre(GenreRequest request) {
+	public GenreResponseDetailed createGenre(GenreRequest request) {
 		Genre genre = new Genre();
 		genre.setName(request.getName());
 		genre.setDescription(request.getDescription());
-		return genreRepository.save(genre);
+		genreRepository.save(genre);
+		return new GenreResponseDetailed(genre);
 	}
 	
-	public Optional<Genre> getGenre(int id) {
-		return genreRepository.findById(id);
+	public Optional<GenreResponseDetailed> getGenre(int id) {
+		return genreRepository.findById(id).map(g -> new GenreResponseDetailed(g));
 	}
 	
-	public Optional<Genre> updateGenre(int id, GenreRequest request){
+	public Optional<GenreResponseDetailed> updateGenre(int id, GenreRequest request){
 		Optional<Genre> optionalGenre = genreRepository.findById(id);
 		if (optionalGenre.isEmpty()) {
-			return optionalGenre;
+			return optionalGenre.map(g -> new GenreResponseDetailed(g));
 		}
 		Genre genre = optionalGenre.get();
 		genre.setDescription(request.getDescription());
 		genre.setName(request.getName());
 		genreRepository.save(genre);
-		return optionalGenre;
+		return optionalGenre.map(GenreResponseDetailed::new);
 	}
 	
-	public Optional<Genre> deleteGenre(int id){
+	public Optional<GenreResponseDetailed> deleteGenre(int id){
 		Optional<Genre> optionalGenre = genreRepository.findById(id);
 		genreRepository.deleteById(id);
-		return optionalGenre;
+		return optionalGenre.map(g -> new GenreResponseDetailed(g));
 	}
 	
-	public List<Genre> getGenres(Sort.Direction direction, String search){
+	public List<GenreResponse> getGenres(Sort.Direction direction, String search){
 		Specification<Genre> spec = Specification.unrestricted();
 		if (search != null) {
 			spec = spec.and(genreSpecification.titleContains(search));
 		}
 		Sort sort = Sort.by(direction, "name");
-		return genreRepository.findAll(spec, sort);
+		return genreRepository.findAll(spec, sort).stream().map(g -> new GenreResponse(g)).toList();
 	}
 
 }

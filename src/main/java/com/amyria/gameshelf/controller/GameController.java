@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.amyria.gameshelf.dto.GameRequest;
 import com.amyria.gameshelf.dto.GameResponse;
 import com.amyria.gameshelf.dto.GameResponseDetailed;
-import com.amyria.gameshelf.exception.InvalidGenreException;
-import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.service.GameService;
@@ -36,18 +33,6 @@ public class GameController {
 		return ResponseEntity.ok(savedGame);
 	}
 	
-//	@GetMapping("/{id}")
-//	public ResponseEntity<Game> getGame(@PathVariable Integer id){
-//		Optional<Game> optionalGame = gameService.getGame(id);
-//		if (optionalGame.isEmpty()) {
-//			return ResponseEntity.notFound().build();
-//		}
-//		else {
-//			return ResponseEntity.ok(optionalGame.get());
-//		}
-//		
-//	}
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<GameResponseDetailed> getGame(@PathVariable Integer id){
 		Optional<GameResponseDetailed> optionalGame = gameService.getGame(id);
@@ -61,8 +46,8 @@ public class GameController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Game> updateGame(@PathVariable Integer id, @RequestBody @Valid GameRequest request){
-		Optional<Game> optionalGame = gameService.updateGame(id, request);
+	public ResponseEntity<GameResponseDetailed> updateGame(@PathVariable Integer id, @RequestBody @Valid GameRequest request){
+		Optional<GameResponseDetailed> optionalGame = gameService.updateGame(id, request);
 		if (optionalGame.isEmpty()){
 			return ResponseEntity.notFound().build();
 		}
@@ -90,7 +75,6 @@ public class GameController {
 		
 		List<GameResponse> games = gameService.getGames(sortBy, direction,search,status,platform);
 		return ResponseEntity.ok(games);
-		
 	}
 
 

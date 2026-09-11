@@ -1,6 +1,5 @@
 package com.amyria.gameshelf.specification;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

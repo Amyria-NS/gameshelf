@@ -39,7 +39,6 @@ public class GameService {
 	public GameResponseDetailed createGame(GameRequest request) {
 		
 		Game game = new Game();
-		
 		game.setTitle(request.getTitle());
 		game.setPlatform(request.getPlatform());
 		game.setStatus(request.getStatus());
@@ -83,13 +82,19 @@ public class GameService {
 	}
 	
 	
-	public Optional<Game> updateGame(int id, GameRequest request){
+	public Optional<GameResponseDetailed> updateGame(int id, GameRequest request){
 		Optional<Game> optionalGame = gameRepository.findById(id);
 		if (optionalGame.isEmpty()) {
-			return optionalGame;
+			return optionalGame.map(g->new GameResponseDetailed(g));
 		}
 		Game game = optionalGame.get();
 		
+		game.setNotes(request.getNotes());
+		game.setPlatform(request.getPlatform());
+		game.setStatus(request.getStatus());
+		game.setTitle(request.getTitle());
+		
+		//Set dateCompleted to now if status is completed but that field is null
 		if (request.getStatus() == Status.COMPLETED) {
 			if(request.getDateCompleted() == null && game.getDateCompleted() == null) {
 				game.setDateCompleted(LocalDate.now());
@@ -99,12 +104,22 @@ public class GameService {
 			}
 		}
 		
-		game.setNotes(request.getNotes());
-		game.setPlatform(request.getPlatform());
-		game.setStatus(request.getStatus());
-		game.setTitle(request.getTitle());
+		//Check genres
+		if(request.getGenreIds() != null) {
+			Optional<Genre> genre;
+			Set<Genre> genreSet = new HashSet<>();
+			for (Integer x : request.getGenreIds()) {
+				genre = genreRepository.findById(x);
+				if (genre.isEmpty()) {
+					throw new InvalidGenreException("Invalid genre ID: " + x);
+				}
+				genreSet.add(genre.get());
+			}
+			game.setGenres(genreSet);
+		}
+		
 		gameRepository.save(game);
-		return optionalGame;
+		return optionalGame.map(g -> new GameResponseDetailed(g));
 	}
 	
 	public Optional<GameResponseDetailed> deleteGame(int id){
