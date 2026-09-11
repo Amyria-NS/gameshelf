@@ -1,5 +1,8 @@
 package com.amyria.gameshelf.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +20,9 @@ public class Genre {
 	private String name;
 	
 	private String description;
+	
+	@ManyToMany(mappedBy="genres")
+	private Set<Game> games = new HashSet<Game>();
 
 	/** GETTERS AND SETTERS */
 	
@@ -38,6 +44,14 @@ public class Genre {
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setGames(Set<Game> games){
+		this.games = games;
+	}
+	
+	public Set<Game> getGames(){
+		return games;
 	}
 	
 	

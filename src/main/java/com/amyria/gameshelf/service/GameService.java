@@ -1,7 +1,6 @@
 package com.amyria.gameshelf.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GameRequest;
+import com.amyria.gameshelf.dto.GameResponseDetailed;
 import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
@@ -51,8 +51,18 @@ public class GameService {
 		
 	}
 	
+	
 	public Optional<Game> getGame(int id) {
-		return gameRepository.findById(id);	
+		Optional<Game> optionalGame = gameRepository.findById(id);	
+		if (optionalGame.isPresent()) {
+			optionalGame.get().getGenres();
+		}
+		return optionalGame;
+	}
+	
+	public Optional<GameResponseDetailed> getGame2(int id){
+		Optional<GameResponseDetailed> optionalGame = gameRepository.findById(id).map(game -> new GameResponseDetailed(game));
+		return optionalGame;
 	}
 	
 	
@@ -104,6 +114,6 @@ public class GameService {
 		
 		return gameRepository.findAll(spec, sort);
 	}
-	
+		
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.amyria.gameshelf.dto.GameRequest;
+import com.amyria.gameshelf.dto.GameResponseDetailed;
 import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
@@ -33,9 +34,21 @@ public class GameController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedGame);
 	}
 	
+//	@GetMapping("/{id}")
+//	public ResponseEntity<Game> getGame(@PathVariable Integer id){
+//		Optional<Game> optionalGame = gameService.getGame(id);
+//		if (optionalGame.isEmpty()) {
+//			return ResponseEntity.notFound().build();
+//		}
+//		else {
+//			return ResponseEntity.ok(optionalGame.get());
+//		}
+//		
+//	}
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Game> getGame(@PathVariable Integer id){
-		Optional<Game> optionalGame = gameService.getGame(id);
+	public ResponseEntity<GameResponseDetailed> getGame(@PathVariable Integer id){
+		Optional<GameResponseDetailed> optionalGame = gameService.getGame2(id);
 		if (optionalGame.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -77,7 +90,6 @@ public class GameController {
 		return ResponseEntity.ok(games);
 		
 	}
-	
 
 
 }

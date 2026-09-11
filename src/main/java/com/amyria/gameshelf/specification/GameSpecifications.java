@@ -23,7 +23,7 @@ public class GameSpecifications {
 	
 	public Specification<Game> titleContains(String search){
 		return (root,query,cb) ->{
-			return cb.like(cb.lower(root.get("title")), "%" + search + "%");
+			return cb.like(cb.lower(root.get("title")), "%" + search.toLowerCase() + "%");
 		};
 	}
 	

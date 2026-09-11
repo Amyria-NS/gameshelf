@@ -1,5 +1,8 @@
 package com.amyria.gameshelf.repository;
 
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,9 @@ import com.amyria.gameshelf.model.Game;
  */
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer>, JpaSpecificationExecutor<Game>{
+	
+	@EntityGraph(attributePaths= {"genres"})
+	Optional<Game> findById(int id);
 	
 	
 
