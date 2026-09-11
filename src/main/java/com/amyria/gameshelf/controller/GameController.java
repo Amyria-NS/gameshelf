@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.amyria.gameshelf.dto.GameRequest;
+import com.amyria.gameshelf.dto.GameResponse;
 import com.amyria.gameshelf.dto.GameResponseDetailed;
+import com.amyria.gameshelf.exception.InvalidGenreException;
 import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
@@ -29,9 +31,9 @@ public class GameController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Game> addGame(@RequestBody @Valid GameRequest request){
-		Game savedGame = gameService.createGame(request);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedGame);
+	public ResponseEntity<GameResponseDetailed> addGame(@RequestBody @Valid GameRequest request){
+		GameResponseDetailed savedGame = gameService.createGame(request);
+		return ResponseEntity.ok(savedGame);
 	}
 	
 //	@GetMapping("/{id}")
@@ -48,7 +50,7 @@ public class GameController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<GameResponseDetailed> getGame(@PathVariable Integer id){
-		Optional<GameResponseDetailed> optionalGame = gameService.getGame2(id);
+		Optional<GameResponseDetailed> optionalGame = gameService.getGame(id);
 		if (optionalGame.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -68,8 +70,8 @@ public class GameController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Game> deleteGame(@PathVariable Integer id){
-		Optional<Game> optionalGame = gameService.deleteGame(id);
+	public ResponseEntity<GameResponseDetailed> deleteGame(@PathVariable Integer id){
+		Optional<GameResponseDetailed> optionalGame = gameService.deleteGame(id);
 		if (optionalGame.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -79,14 +81,14 @@ public class GameController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Game>> getGames(
+	public ResponseEntity<List<GameResponse>> getGames(
 			@RequestParam(defaultValue="title") String sortBy,
 			@RequestParam(defaultValue="ASC") Sort.Direction direction,
 			@RequestParam(required=false) String search,
 			@RequestParam(required=false) Status status,
 			@RequestParam(required=false) Platform platform){
 		
-		List<Game> games = gameService.getGames(sortBy, direction,search,status,platform);
+		List<GameResponse> games = gameService.getGames(sortBy, direction,search,status,platform);
 		return ResponseEntity.ok(games);
 		
 	}

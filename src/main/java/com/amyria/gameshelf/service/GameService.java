@@ -1,19 +1,25 @@
 package com.amyria.gameshelf.service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.amyria.gameshelf.dto.GameRequest;
+import com.amyria.gameshelf.dto.GameResponse;
 import com.amyria.gameshelf.dto.GameResponseDetailed;
+import com.amyria.gameshelf.exception.InvalidGenreException;
 import com.amyria.gameshelf.model.Game;
+import com.amyria.gameshelf.model.Genre;
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.repository.GameRepository;
+import com.amyria.gameshelf.repository.GenreRepository;
 import com.amyria.gameshelf.specification.GameSpecifications;
 
 @Service
@@ -21,14 +27,16 @@ public class GameService {
 	
 	private final GameRepository gameRepository;
 	private final GameSpecifications gameSpecifications;
+	private final GenreRepository genreRepository;
 	
 	//GameRepository should be provided when GameService is initialized
-	public GameService(GameRepository gameRepository, GameSpecifications gameSpecifications) {
+	public GameService(GameRepository gameRepository, GenreRepository genreRepository, GameSpecifications gameSpecifications) {
 		this.gameRepository = gameRepository;
+		this.genreRepository = genreRepository;
 		this.gameSpecifications = gameSpecifications;
 	}
 	
-	public Game createGame(GameRequest request) {
+	public GameResponseDetailed createGame(GameRequest request) {
 		
 		Game game = new Game();
 		
@@ -38,6 +46,7 @@ public class GameService {
 		game.setNotes(request.getNotes());
 		game.setDateAdded(LocalDate.now());
 		
+		//If status is complete but no completion date is provided, default to now
 		if (request.getStatus() == Status.COMPLETED) {
 			if (request.getDateCompleted() != null) {
 				game.setDateCompleted(request.getDateCompleted());
@@ -47,20 +56,28 @@ public class GameService {
 			}
 		}
 		
-		return gameRepository.save(game);
+		//Check genres
+		if(request.getGenreIds() != null) {
+			Optional<Genre> genre;
+			Set<Genre> genreSet = new HashSet<>();
+			for (Integer x : request.getGenreIds()) {
+				genre = genreRepository.findById(x);
+				if (genre.isEmpty()) {
+					throw new InvalidGenreException("Invalid genre ID: " + x);
+				}
+				genreSet.add(genre.get());
+			}
+			game.setGenres(genreSet);
+		}
+		
+		gameRepository.save(game);
+		return new GameResponseDetailed(game);
 		
 	}
 	
 	
-	public Optional<Game> getGame(int id) {
-		Optional<Game> optionalGame = gameRepository.findById(id);	
-		if (optionalGame.isPresent()) {
-			optionalGame.get().getGenres();
-		}
-		return optionalGame;
-	}
 	
-	public Optional<GameResponseDetailed> getGame2(int id){
+	public Optional<GameResponseDetailed> getGame(int id){
 		Optional<GameResponseDetailed> optionalGame = gameRepository.findById(id).map(game -> new GameResponseDetailed(game));
 		return optionalGame;
 	}
@@ -90,8 +107,8 @@ public class GameService {
 		return optionalGame;
 	}
 	
-	public Optional<Game> deleteGame(int id){
-		Optional<Game> optionalGame = gameRepository.findById(id);
+	public Optional<GameResponseDetailed> deleteGame(int id){
+		Optional<GameResponseDetailed> optionalGame = gameRepository.findById(id).map(g->new GameResponseDetailed(g));
 		if (optionalGame.isEmpty()) {
 			return optionalGame;
 		}
@@ -99,7 +116,7 @@ public class GameService {
 		return optionalGame;
 	}
 	
-	public List<Game> getGames(String sortBy, Sort.Direction direction, String search, Status status, Platform platform){
+	public List<GameResponse> getGames(String sortBy, Sort.Direction direction, String search, Status status, Platform platform){
 		Specification<Game> spec = Specification.unrestricted();
 		if (search != null) {
 			spec = spec.and(gameSpecifications.titleContains(search));
@@ -112,7 +129,7 @@ public class GameService {
 		}
 		Sort sort = Sort.by(direction, sortBy);
 		
-		return gameRepository.findAll(spec, sort);
+		return gameRepository.findAll(spec, sort).stream().map(game -> new GameResponse(game)).toList();
 	}
 		
 

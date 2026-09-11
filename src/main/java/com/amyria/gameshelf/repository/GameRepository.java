@@ -18,6 +18,7 @@ import com.amyria.gameshelf.model.Game;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer>, JpaSpecificationExecutor<Game>{
 	
+	/** Whenever one specific game is searched, also get the genres **/
 	@EntityGraph(attributePaths= {"genres"})
 	Optional<Game> findById(int id);
 	

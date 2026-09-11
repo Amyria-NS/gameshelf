@@ -1,6 +1,7 @@
 package com.amyria.gameshelf.dto;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.amyria.gameshelf.model.enums.Platform;
 import com.amyria.gameshelf.model.enums.Status;
@@ -35,6 +36,8 @@ public class GameRequest {
 	private String notes;
 	
 	private LocalDate dateCompleted;
+	
+	private Set<Integer> genreIds;
 
 	/** GETTERS AND SETTERS */
 	
@@ -77,7 +80,14 @@ public class GameRequest {
 	public void setDateCompleted(LocalDate dateCompleted) {
 		this.dateCompleted = dateCompleted;
 	}
-	
+
+	public Set<Integer> getGenreIds() {
+		return genreIds;
+	}
+
+	public void setGenreIds(Set<Integer> genreIds) {
+		this.genreIds = genreIds;
+	}
 	
 
 }
