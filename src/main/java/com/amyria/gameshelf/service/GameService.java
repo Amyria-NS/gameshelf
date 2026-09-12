@@ -117,7 +117,6 @@ public class GameService {
 			}
 			game.setGenres(genreSet);
 		}
-		
 		gameRepository.save(game);
 		return optionalGame.map(g -> new GameResponseDetailed(g));
 	}
