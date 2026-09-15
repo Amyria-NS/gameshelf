@@ -21,6 +21,6 @@ public interface GenreRepository extends JpaRepository<Genre,Integer>, JpaSpecif
 	
 	/** Whenever one specific genre is searched, also get the games **/
 	@EntityGraph(attributePaths= {"games"})
-	Optional<Genre> findById(int id);
+	Optional<Genre> findById(Integer id);
 
 }

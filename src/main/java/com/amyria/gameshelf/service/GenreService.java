@@ -14,6 +14,13 @@ import com.amyria.gameshelf.model.Genre;
 import com.amyria.gameshelf.repository.GenreRepository;
 import com.amyria.gameshelf.specification.GenreSpecification;
 
+/**
+ * Provides business logic for managing Genres in the GameShelf library.
+ * 
+ * Handles Genre creation, retrieval, updating, deletion, filtering and sorting while coordinating game and genre persistence.
+ * @author Amyria-NS
+ */
+
 @Service
 public class GenreService {
 	

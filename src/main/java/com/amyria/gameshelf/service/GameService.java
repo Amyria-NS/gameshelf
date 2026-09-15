@@ -22,6 +22,13 @@ import com.amyria.gameshelf.repository.GameRepository;
 import com.amyria.gameshelf.repository.GenreRepository;
 import com.amyria.gameshelf.specification.GameSpecifications;
 
+/**
+ * Provides business logic for managing games in the GameShelf library.
+ * 
+ * Handles game creation, retrieval, updating, deletion, filtering and sorting while coordinating game and genre persistence.
+ * @author Amyria-NS
+ */
+
 @Service
 public class GameService {
 	
@@ -44,7 +51,7 @@ public class GameService {
 		game.setNotes(request.getNotes());
 		game.setDateAdded(LocalDate.now());
 		
-		//Set dateCompleted to now if status is completed but that field is null. Completed game should always have a completed date.
+		//Completed game should always have a completed date. Use the date supplied if it exists, otherwise default to today's date
 		if (request.getStatus() == Status.COMPLETED) {
 			if (request.getDateCompleted() != null) {
 				game.setDateCompleted(request.getDateCompleted());
@@ -93,7 +100,7 @@ public class GameService {
 		game.setStatus(request.getStatus());
 		game.setTitle(request.getTitle());
 		
-		//Set dateCompleted to now if status is completed but that field is null. Completed game should always have a completed date.
+		//Completed game should always have a completed date. Use the date supplied if it exists, otherwise default to today's date
 		if (request.getStatus() == Status.COMPLETED) {
 			if(request.getDateCompleted() == null && game.getDateCompleted() == null) {
 				game.setDateCompleted(LocalDate.now());
@@ -103,7 +110,7 @@ public class GameService {
 			}
 		}
 		
-		//If genre IDs are included in the request, update the game's set of Genres.
+		//If genre IDs are included in the request, update the game's set of Genres. A blank set means "remove all genres from this game"
 		if(request.getGenreIds() != null) {
 			Optional<Genre> genre;
 			Set<Genre> genreSet = new HashSet<>();
@@ -130,6 +137,7 @@ public class GameService {
 	}
 	
 	public List<GameResponse> getGames(String sortBy, Sort.Direction direction, String search, Status status, Platform platform){
+		//Build the query dynamically based on which optional filters were supplied.
 		Specification<Game> spec = Specification.unrestricted();
 		if (search != null) {
 			spec = spec.and(gameSpecifications.titleContains(search));

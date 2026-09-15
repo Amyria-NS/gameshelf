@@ -25,6 +25,13 @@ import com.amyria.gameshelf.model.GameImage;
 import com.amyria.gameshelf.repository.GameImageRepository;
 import com.amyria.gameshelf.repository.GameRepository;
 
+/**
+ * Provides business logic for managing game images in the GameShelf library.
+ * 
+ * Handles image uploading, retrieval and deletion.
+ * @author Amyria-NS
+ */
+
 @Service
 public class GameImageService {
 	
@@ -40,6 +47,15 @@ public class GameImageService {
 		this.gameRepository = gameRepository;
 	}
 	
+	/**
+	 * Service method to upload a game image. Includes several validations to ensure the uploaded file is 
+	 * an image of a supported type. If an image is uploaded and the game already has an image, the method will
+	 * upload the provided image and delete the old image, effectively replacing it.
+	 * @param img
+	 * @param gameId
+	 * @return
+	 * @throws IOException
+	 */
 	@Transactional
 	public GameImageResponse uploadImage(MultipartFile img, Integer gameId) throws IOException {
 		
@@ -99,6 +115,8 @@ public class GameImageService {
 		Optional<GameImage> existingImg = gameImageRepository.findByGameId(gameId);
 		boolean imageExists = existingImg.isPresent();
 		String oldImagePath = null;
+		
+		//If the image exists, the existing record will be used and updated. Otherwise, new GameImage object will be created
 		if (imageExists) {
 			gameImg = existingImg.get();
 			oldImagePath = gameImg.getImage_path();
@@ -109,6 +127,7 @@ public class GameImageService {
 		}
 		gameImg.setImage_path(uploadDir+"/"+fileName);
 		
+		//If the database transaction fails, delete the file that was just uploaded so it is not orphaned.
 		try {
 			gameImageRepository.saveAndFlush(gameImg);
 		}
@@ -116,7 +135,7 @@ public class GameImageService {
 			Files.deleteIfExists(target);
 			throw e;
 		}
-		
+		// Delete the image being replaced
 		if(imageExists) {
 			Files.deleteIfExists(Paths.get(oldImagePath));
 		}
