@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,14 @@ import com.amyria.gameshelf.model.enums.Status;
 import com.amyria.gameshelf.service.GameService;
 
 import jakarta.validation.Valid;
+
+
+/**
+ * REST controller for managing games in the GameShelf library
+ * 
+ * Handles HTTP requests for creating, retrieving, updating, deleting, filtering and sorting games. 
+ * @author Amyria-NS
+ */
 
 @RestController
 @RequestMapping("api/games")
@@ -30,7 +39,7 @@ public class GameController {
 	@PostMapping
 	public ResponseEntity<GameResponseDetailed> addGame(@RequestBody @Valid GameRequest request){
 		GameResponseDetailed savedGame = gameService.createGame(request);
-		return ResponseEntity.ok(savedGame);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedGame);
 	}
 	
 	@GetMapping("/{id}")

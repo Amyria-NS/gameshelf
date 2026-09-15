@@ -16,12 +16,8 @@ import jakarta.persistence.*;
 @Table(name="games")
 public class Game {
 	
-	/** Default Constructor */
-	public Game() {
-		
-	}
+	public Game() {}
 	
-	/** Unique ID associated with the game */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -47,6 +43,7 @@ public class Game {
 	@Column (name = "date_completed")
 	private LocalDate dateCompleted;
 	
+	/** List of Genre objects associated with this game **/
 	@ManyToMany
 	@JoinTable(name="game_genres", joinColumns = @JoinColumn(name="game_id"), inverseJoinColumns = @JoinColumn(name="genre_id"))
 	private Set<Genre> genres = new HashSet<Genre>();

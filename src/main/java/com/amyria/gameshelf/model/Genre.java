@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 @Table(name="genres")
 public class Genre {
 	
-	/** Default Constructor */
 	public Genre() {}
 	
 	@Id
@@ -21,6 +20,7 @@ public class Genre {
 	
 	private String description;
 	
+	/** Set of Game objects that are associated with this Genre **/
 	@ManyToMany(mappedBy="genres")
 	private Set<Game> games = new HashSet<Game>();
 

@@ -1,13 +1,11 @@
 package com.amyria.gameshelf.exception;
 
-public class InvalidGenreException extends RuntimeException{
+public class InvalidImageException extends RuntimeException{
 	
 	private static final long serialVersionUID = 1L;
-	
-	public InvalidGenreException(String message) {
+
+	public InvalidImageException(String message) {
 		super(message);
 	}
 	
-
-
 }

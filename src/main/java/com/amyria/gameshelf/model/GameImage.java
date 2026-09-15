@@ -28,7 +28,7 @@ public class GameImage {
 	@Column(length=500, nullable=false)
 	private String image_path;
 	
-	//GETTERS AND SETTERS
+	/** GETTERS AND SETTERS **/
 
 	public Integer getId() {
 		return id;

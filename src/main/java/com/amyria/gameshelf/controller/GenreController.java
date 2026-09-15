@@ -24,6 +24,13 @@ import com.amyria.gameshelf.service.GenreService;
 
 import jakarta.validation.Valid;
 
+/**
+ * REST controller for managing game genres in the GameShelf library
+ * 
+ * Handles HTTP requests for creating, retrieving, updating, deleting, filtering and sorting genres.
+ * @author Amyria-NS 
+ */
+
 @RestController
 @RequestMapping("api/genres")
 @CrossOrigin(origins = "*") 

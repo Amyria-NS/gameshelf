@@ -6,6 +6,10 @@ import java.util.Set;
 import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.Genre;
 
+/** 
+ * Detailed Genre response DTO. This response includes a set of GameResponses which represent the games that are tagged with this genre
+ * @author Amyria-NS
+ **/
 public class GenreResponseDetailed extends GenreResponse {
 
 	private Set<GameResponse> games = new HashSet<>();

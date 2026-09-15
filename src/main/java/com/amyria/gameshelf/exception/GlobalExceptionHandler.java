@@ -38,5 +38,23 @@ public class GlobalExceptionHandler {
 		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown field: " + e.getPropertyName());
 		return ResponseEntity.badRequest().body(error);
 	}
+	
+	@ExceptionHandler(InvalidImageException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidImage(InvalidImageException e){
+		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return ResponseEntity.badRequest().body(error);
+	}
+	
+	@ExceptionHandler(GameNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleGameNotFound(GameNotFoundException e){
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(InvalidGameException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidGame(InvalidGameException e){
+		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return ResponseEntity.badRequest().body(error);
+	}
 
 }

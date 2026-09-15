@@ -29,7 +29,6 @@ public class GameService {
 	private final GameSpecifications gameSpecifications;
 	private final GenreRepository genreRepository;
 	
-	//GameRepository should be provided when GameService is initialized
 	public GameService(GameRepository gameRepository, GenreRepository genreRepository, GameSpecifications gameSpecifications) {
 		this.gameRepository = gameRepository;
 		this.genreRepository = genreRepository;
@@ -45,7 +44,7 @@ public class GameService {
 		game.setNotes(request.getNotes());
 		game.setDateAdded(LocalDate.now());
 		
-		//If status is complete but no completion date is provided, default to now
+		//Set dateCompleted to now if status is completed but that field is null. Completed game should always have a completed date.
 		if (request.getStatus() == Status.COMPLETED) {
 			if (request.getDateCompleted() != null) {
 				game.setDateCompleted(request.getDateCompleted());
@@ -55,7 +54,7 @@ public class GameService {
 			}
 		}
 		
-		//Check genres
+		//Get the set of Genres
 		if(request.getGenreIds() != null) {
 			Optional<Genre> genre;
 			Set<Genre> genreSet = new HashSet<>();
@@ -94,7 +93,7 @@ public class GameService {
 		game.setStatus(request.getStatus());
 		game.setTitle(request.getTitle());
 		
-		//Set dateCompleted to now if status is completed but that field is null
+		//Set dateCompleted to now if status is completed but that field is null. Completed game should always have a completed date.
 		if (request.getStatus() == Status.COMPLETED) {
 			if(request.getDateCompleted() == null && game.getDateCompleted() == null) {
 				game.setDateCompleted(LocalDate.now());
@@ -104,7 +103,7 @@ public class GameService {
 			}
 		}
 		
-		//Check genres
+		//If genre IDs are included in the request, update the game's set of Genres.
 		if(request.getGenreIds() != null) {
 			Optional<Genre> genre;
 			Set<Genre> genreSet = new HashSet<>();
