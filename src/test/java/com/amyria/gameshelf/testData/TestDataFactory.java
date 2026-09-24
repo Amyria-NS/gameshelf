@@ -1,13 +1,11 @@
 package com.amyria.gameshelf.testData;
 
-import static org.mockito.ArgumentMatchers.anySet;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.amyria.gameshelf.dto.GameRequest;
+import com.amyria.gameshelf.dto.GenreRequest;
 import com.amyria.gameshelf.model.Game;
 import com.amyria.gameshelf.model.Genre;
 import com.amyria.gameshelf.model.enums.Platform;
@@ -41,6 +39,13 @@ public class TestDataFactory {
         genre.setName("Test Genre");
         genre.setDescription("Test genre description");
         return genre;
+    }
+    
+    public Genre createSimpleGenre2() {
+    	Genre genre = new Genre();
+    	genre.setName("Test Genre 2");
+    	genre.setDescription("Test genre description two");
+    	return genre;
     }
     
     public GameRequest gameRequestNotCompleted() {
@@ -77,7 +82,8 @@ public class TestDataFactory {
     	gameReq.setNotes("Test notes");
     	gameReq.setStatus(Status.BACKLOG);
     	gameReq.setPlatform(Platform.GAMECUBE);
-    	gameReq.setGenreIds(new HashSet<Integer>(Set.of(1)));
+    	//gameReq.setGenreIds(new HashSet<Integer>(Set.of(1)));
+    	gameReq.setGenreIds(Set.of(1));
     	return gameReq;
     }
     
@@ -89,6 +95,13 @@ public class TestDataFactory {
     	gameReq.setPlatform(Platform.GAMECUBE);
     	gameReq.setGenreIds(new HashSet<>());
     	return gameReq;
+    }
+    
+    public GenreRequest genreRequestSimple(){
+    	GenreRequest genreReq = new GenreRequest();
+    	genreReq.setName("Test genre");
+    	genreReq.setDescription("Test description");
+    	return genreReq;
     }
     
     
