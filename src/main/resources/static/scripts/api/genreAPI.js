@@ -1,7 +1,9 @@
-const API_BASE_URL = "http://localhost:8080/api";
+import { API_BASE_URL } from "./baseURLConstant.js";
 
-export async function getGameById(id){
-    const response = await fetch(`${API_BASE_URL}/games/${id}`);
+/** GENRE API METHODS */
+
+export async function getGenreById(id){
+    const response = await fetch(`${API_BASE_URL}/genres/${id}`);
 
     if (!response.ok) {
         let message;
@@ -10,7 +12,7 @@ export async function getGameById(id){
                 message = "No entry found with that ID";
                 break;
             default:
-                message = `Failed to retrieve game. Status code: ${response.status}`
+                message = `Failed to retrieve genre. Status code: ${response.status}`
                 break
         }
         return{
@@ -28,16 +30,16 @@ export async function getGameById(id){
     }
 }
 
-export async function createGame(gameObj){
-    const response = await fetch(`${API_BASE_URL}/games`, {
+export async function createGenre(genreObj){
+    const response = await fetch(`${API_BASE_URL}/genres`,{
         method: "POST",
         headers: {
-            'Content-Type' : 'application/json'
+            "Content-Type" : "application/json"
         },
-        body:JSON.stringify(gameObj)
+        body : JSON.stringify(genreObj)
     });
 
-    if (!response.ok){
+    if (!response.ok) {
         let message;
         switch(response.status){
             case 400:
@@ -47,8 +49,8 @@ export async function createGame(gameObj){
                 message = `POST failed with error code ${response.status}`
                 break;
         }
-        return {
-            success:false,
+        return{
+            success: false,
             message: message,
             status: response.status
         }
@@ -56,33 +58,36 @@ export async function createGame(gameObj){
     const json = await response.json();
     return {
         success: true,
-        message: "Game created successfully",
+        message: "Entry retrieved",
         status: response.status,
         value: json
     }
 }
 
-export async function updateGame(gameObj){
-    const response = await fetch(`${API_BASE_URL}/games/${gameObj.id}`, {
+export async function updateGenre(genreObj){
+    const response = await fetch(`${API_BASE_URL}/genres/${genreObj.id}`,{
         method: "PUT",
         headers: {
-            'Content-Type' : 'application/json'
+            "Content-Type" : "application/json"
         },
-        body:JSON.stringify(gameObj)
+        body : JSON.stringify(genreObj)
     });
 
-    if (!response.ok){
+    if (!response.ok) {
         let message;
         switch(response.status){
+            case 404: 
+                message = "No entry found with that ID";
+                break;
             case 400:
                 message = "Bad request, fields failed to validate"
                 break;
             default:
                 message = `PUT failed with error code ${response.status}`
-                break;
+                break
         }
-        return {
-            success:false,
+        return{
+            success: false,
             message: message,
             status: response.status
         }
@@ -90,19 +95,18 @@ export async function updateGame(gameObj){
     const json = await response.json();
     return {
         success: true,
-        message: "Game updated successfully",
+        message: "Entry retrieved",
         status: response.status,
         value: json
     }
 }
 
-export async function deleteGame(id){
-    const response = await fetch(`${API_BASE_URL}/games/${id}`, {
+export async function deleteGenre(id){
+    const response = await fetch(`${API_BASE_URL}/genres/${id}`, {
         method: "DELETE"
-    });
-
+    }) ;
     if (!response.ok){
-        console.log(response);
+        //console.log(response);
         let message;
         switch(response.status){
             case 404:
@@ -119,28 +123,17 @@ export async function deleteGame(id){
     const json = await response.json();
     return {
         success: true,
-        message: "Game deleted successfully",
+        message: "Genre deleted successfully",
         status: response.status,
         value: json
     }
-
 }
 
-export async function getGameList(options){
+export async function getGenreList(options){
     const queryString = new URLSearchParams(options).toString();
-    const response = await fetch(`${API_BASE_URL}/games?${queryString}`);
-    
-
+    const response = await fetch(`${API_BASE_URL}/genres?${queryString}`);
     if (!response.ok) {
-        let message;
-        switch(response.status){
-            case 404: 
-                message = "No entry found with that ID";
-                break;
-            default:
-                message = `Failed to retrieve game. Status code: ${response.status}`
-                break
-        }
+        const message = `Failed to retrieve game. Status code: ${response.status}`;
         return{
             success: false,
             message: message,

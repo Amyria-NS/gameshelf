@@ -1,4 +1,4 @@
-import { getGameById, createGame, updateGame, deleteGame } from "./api.js";
+import { getGameById, createGame, updateGame, deleteGame } from "./api/gameAPI.js";
 
 async function displayGameInfo(id){
     const obj = await getGameById(id);
